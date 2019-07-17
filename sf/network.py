@@ -28,7 +28,7 @@ def pingsweepNetwork(network : str,subnet: str = '24' ):
     ips = generateIP(network,subnet)
     p = multiprocessing.Pool(len(ips))
     activeIP = list(filter(RES,p.map(pingsweep,ips)))
-    print(activeIP)
+    return activeIP
             
 
 def pingsweep(ip : str):
@@ -44,4 +44,3 @@ def pingsweep(ip : str):
         pass
     return activeIP
 
-pingsweepNetwork('192.168.43.0','24')
