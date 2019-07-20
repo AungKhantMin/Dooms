@@ -1,4 +1,6 @@
-from network import *
+from lib.network import *
+import argparse
+
 
 if __name__ == '__main__':
     try:
