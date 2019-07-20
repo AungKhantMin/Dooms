@@ -69,7 +69,7 @@ class Network(object):
             s.settimeout(5)
             if res == 0:
                 s.close()
-                openPort.append(port)
+                openPort.append(str(port))
             else:
                 pass
         except KeyboardInterrupt:
@@ -115,14 +115,10 @@ class Network(object):
         except:
             pass
 
-
-try:
-    n = Network()
-    x = n.pingsweepNetwork('192.168.43.0')
-    print(x)
-    for host in x:
-        print(n.portScan(host,n.commonPort))
-except KeyboardInterrupt:
-    exit(0)
-except:
-    pass
+    def nmapScan(self, ip : str, ports: list):
+        '''
+            To Scan Service Version and Vulnerabality 
+        '''
+        portsStr = ','.join(ports)
+        output = subprocess.Popen(["sudo","nmap","-sS","-A","-sV","-p",portsStr,ip],stdout=subprocess.PIPE).communicate()[0]
+        print(output)
