@@ -33,3 +33,7 @@ Read What to Do [here](WORK/ANO.md)
 ## For SuMu
 
 Read What To Do [here](WORK/SUMU.md)
+
+## For Wai Muu Aung
+
+Read What To Do [here](WORK/WMA.md)
