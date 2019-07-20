@@ -121,4 +121,4 @@ class Network(object):
         '''
         portsStr = ','.join(ports)
         output = subprocess.Popen(["sudo","nmap","-sS","-A","-sV","-p",portsStr,ip],stdout=subprocess.PIPE).communicate()[0]
-        print(output)
+        return output.decode('utf-8')

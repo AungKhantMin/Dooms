@@ -8,7 +8,7 @@ if __name__ == '__main__':
         for host in x:
             port = n.portScan(host,n.commonPort)
             print(port)
-            n.nmapScan(host,port)
+            print(n.nmapScan(host,port))
     except KeyboardInterrupt:
         exit(0)
     except:
