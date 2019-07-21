@@ -8,3 +8,5 @@ n = Network()
 #     portStr = ','.join(ports)
 #     print(portStr)
 print(n.nmapScan('192.168.1.1',['53','80','443']))
+
+#lol
