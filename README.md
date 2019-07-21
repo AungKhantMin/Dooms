@@ -21,6 +21,10 @@ Learn Python Basic Syntax. Ref Book [Learn Python In The Hard Way](REF/LPTHW.pdf
 Create A Github Account, If You don't have one. Learn How to use github basic function with repo. Install Github desktop.
 clone my repo. I already created branches for all of you. Only write code in your own brunch so i don't need to worry about fucking duplicate and confliting error. If You don't understand what i am sayin here you can ask me in messenger. I will write detail later.
 
+## Python3 Tutorial
+
+[Tutorial Point](https://www.tutorialspoint.com/python3/)
+
 ## Important 
 
 Write code only in your branch.
