@@ -115,7 +115,7 @@ class Network(object):
         except:
             pass
 
-    def nmapScan(self, ip : str, ports: list):
+    def nmapScan(self, ip: str, ports: list) -> object:
         '''
             To Scan Service Version and Vulnerabality 
         '''
