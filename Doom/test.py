@@ -1,11 +1,9 @@
-from multiprocessing import *
-
-def f(x :int, y:list):
-    for k in y:
-        print('x = {}'.format(x))
-        print('k = {}'.format(k))
-        print(x*k)
+from Doom.module.network import *
 
 
-p = Pool(5)
-p.starmap(f,[(2,[4,5])])
+n = Network()
+hosts = n.pingsweepNetwork('192.168.1.0','24')
+for host in hosts:
+    ports = n.multiPortScan(host,n.commonPort)
+    portStr = ','.join(ports)
+    n.nmapScan(host,ports)

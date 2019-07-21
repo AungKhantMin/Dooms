@@ -1,1 +1,3 @@
-from lib.network import *
+from shell import *
+
+DoomShell().cmdloop()
