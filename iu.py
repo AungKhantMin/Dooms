@@ -1,5 +1,21 @@
-car = 999
-ht = "hi"
+def cal():
 
-print(car)
-print(ht)
+v=int(input("enter first number"))
+g=int(input("enter second number"))
+
+choice=input('what do you want to do?'
+             '+ - * /')
+
+if choice=="+":
+    a=v+g
+    print(a)
+
+elif choice=="-":
+
+
+
+
+
+
+
+    return
