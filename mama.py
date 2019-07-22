@@ -7,4 +7,4 @@ print(ma[3:] *3
 
 mama=["a","b","c","d","e","f"]
 
-print(mama[1:3])
+print(mama[1:3 ])
