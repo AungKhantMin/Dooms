@@ -24,6 +24,7 @@ clone my repo. I already created branches for all of you. Only write code in you
 ## Python3 Tutorial
 
 [Tutorial Point](https://www.tutorialspoint.com/python3/)
+[javaTpoint](https://www.javatpoint.com/python-example)
 
 ## Important 
 
