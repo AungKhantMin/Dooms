@@ -42,3 +42,14 @@ Read What To Do [here](WORK/SUMU.md)
 ## For Wai Muu Aung
 
 Read What To Do [here](WORK/WMA.md)
+
+
+## New Jobs For Everyone in Project
+
+Hope, You All Done Setting Up For The Development Enviroment. If You haven't done yet ask SAMU,ANO what to do. 
+So here is what i am plaining to do, First We will do first 10 chapter of Learn Python In The Hard Way book within a month.
+We all know that we don't have anything to do so much. You all have to study two chapters a week and do all the exercises and commit to your brunch. That is our first goal.
+
+For the second goal, you guys have to make familiar with kali linux. all of you can ask me about everything anytime cause i am almost always online. Make familiar with terminal especially and commands. Then read online about famous tools like nmap,metasploit,gobuster,hydra and learn how to use them
+
+I will place reference and link below 
