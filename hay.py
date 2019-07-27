@@ -25,6 +25,7 @@ def calculate():
         a=v/g
         print(a)
 
+calculate()
 ans=input("Do you want to do it all agian?")
 if ans=="yes":
     calculate()
