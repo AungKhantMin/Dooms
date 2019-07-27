@@ -1,29 +1,36 @@
+def calculate():
+    v=int(input("enter first number"))
+    g=int(input("enter second number"))
 
-v=int(input("enter first number"))
-g=int(input("enter second number"))
+    choice=input('what do you want to do?'
+                 '+ - * /')
 
-choice=input('what do you want to do?'
-             '+ - * /')
-
-if choice=="+":
-    a=v+g
-    print(a)
-
-elif choice=="-":
-    if v>g:
-        a=v-g
+    if choice=="+":
+        a=v+g
         print(a)
+
+    elif choice=="-":
+        if v>g:
+            a=v-g
+            print(a)
+        else:
+            a=g-v
+            print(a)
+
+    elif choice=="*":
+        a=v*g
+        print(a)
+
     else:
-        a=g-v
+        a=v/g
         print(a)
 
-elif choice=="*":
-    a=v*g
-    print(a)
+ans=input("Do you want to do it all agian?")
+if ans=="yes":
+    calculate()
 
 else:
-    a=v/g
-    print(a)
+    print("Bye Bye")
 
 
 
