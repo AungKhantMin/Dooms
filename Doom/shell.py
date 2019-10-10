@@ -1,6 +1,7 @@
 import cmd
-import sys
-from module.network import *
+
+from modules.network import *
+
 
 class DoomShell(cmd.Cmd):
     intro = "Doom Information Gathering and Vulnerable Analysis Framework\n"
@@ -11,3 +12,11 @@ class DoomShell(cmd.Cmd):
         '''
             Choose What Module To Use. Eg. use module/network
         '''
+
+    def do_exit(self,arg):
+        '''
+            Exist From The Current Session
+        :return:
+        '''
+
+        exit()
