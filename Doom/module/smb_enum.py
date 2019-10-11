@@ -1,6 +1,7 @@
 from __future__ import division
 from __future__ import print_function
 
+import re
 import logging
 from Doom.module import logger
 from Doom.module.smbclient import MiniImpacketShell
@@ -26,25 +27,27 @@ class SMBEnum(object):
             smbClient = SMBConnection(self.target,self.target,sess_port=self.port)
             smbClient.login(self.user,self.password)
             logging.info("Successfully Login As %s ..." % self.user)
-            shell = MiniImpacketShell(smbClient)
-            shares = shell.do_shares("shares")
+            self.shell = MiniImpacketShell(smbClient)
+            shares = self.shell.do_shares("shares")
             shares_list = []
-            for i in range(len(shares)):
-                share = shares[i]['shi1_netname'][:-1]
-                if share not in self.ignore_share:
-                    shares_list.append(share)
 
             logging.info("Listing Shares")
             logging.getLogger().level = logging.DEBUG
-            for share in shares_list:
-                    logging.debug(share)
+
+            for i in range(len(shares)):
+                share = shares[i]['shi1_netname'][:-1]
+                logging.debug(share)
+                if share not in self.ignore_share:
+                    if "$" not in share:
+                        shares_list.append(share)
 
             LOG.level = logging.INFO
-
-            LOG.info("Listing File And Directory For Share %s " % share)
             for share in shares_list:
-                shell.do_use(share)
-                shell.do_ls('')
+                LOG.info("Listing File And Directory For Share %s \n" % share)
+                self.shell.do_use(share)
+                directory_list = self.shell.do_ls('')
+                print("\n")
+                self.recursive_dirlist(directory_list,share)
 
         except Exception as e:
             LOG.level = logging.DEBUG
@@ -53,5 +56,24 @@ class SMBEnum(object):
                 traceback.print_exc()
             logging.error(str(e))
 
-gg  = SMBEnum("10.10.10.14")
+    def recursive_dirlist(self,directory_list,share=""):
+
+            if directory_list is not None:
+                for directory in directory_list:
+                    LOG.info("Listing File And Directory For Path \\\\%s\\%s" % (share, directory))
+                    print("\n")
+                    self.shell.do_cd(directory)
+                    directory_list = self.shell.do_ls('')
+                    print("\n")
+                    temp_share = share
+                    if len(directory_list) != 0 :
+                        share += "\\" +directory
+                        self.recursive_dirlist(directory_list,share)
+                    else:
+                        self.shell.do_cd("..")
+                        share = temp_share
+
+
+
+gg  = SMBEnum("10.10.10.134")
 gg.tryLogin()
