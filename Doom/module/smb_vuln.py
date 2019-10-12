@@ -27,6 +27,8 @@ class SMBVulnScan():
             data += self.console.read()['data']
 
         print(data)
+        if "NOT" not in data:
+            LOG.info("You can use MS17-010 to exploit the target machine")
 
 gg = SMBVulnScan("D4rkn3ss")
 gg.check_ms17_010("10.10.10.134")
