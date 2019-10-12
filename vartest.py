@@ -1,0 +1,7 @@
+print("How old are you?" )
+age = input()
+print(age)
+print("How tall are you?")
+height=input()
+print(height)
+print("so you are %s age old and %s feet tall"%(age,height))
