@@ -11,6 +11,10 @@ class DNS(object):
         logger.init()
 
     def zoneTransfer(self):
+        '''
+            Perform Dns Zone transfer on target server and target zone
+        :return:
+        '''
         LOG.info("Trying To Perform Zone Transfer on %s .." % self.target)
         output = subprocess.Popen(["dig","axfr","@%s" % self.target,"%s" % self.zone],stdout=subprocess.PIPE).communicate()[0]
         output = str(output,'UTF-8').split("\n")
