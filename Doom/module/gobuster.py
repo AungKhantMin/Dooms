@@ -4,10 +4,12 @@ import logging
 from impacket import LOG
 from Doom.module import logger
 
-#run Directory BruteForcing Against Web Server using dirb small-medium  as wordlist and gobuster
 
 
 class GoBuster(object):
+    '''
+    Run Directory BruteForcing Against Web Server using dirb small-medium  as wordlist and gobuster
+    '''
     def __init__(self,ip,port=80,wordlist="../wordlist/directory-list-2.3-medium.txt",thread=50):
         self.target = ip
         self.port = port
