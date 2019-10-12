@@ -6,7 +6,8 @@ import logging
 from Doom.module import logger
 from impacket import LOG
 
-class SMBVulnScan():
+
+class SMBVulnScan(object):
     def __init__(self,password):
         self.password = password
         self.client = MsfRpcClient(self.password,port=55553)

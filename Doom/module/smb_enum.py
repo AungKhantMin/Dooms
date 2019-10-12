@@ -7,7 +7,7 @@ from Doom.module import logger
 from Doom.module.smbclient import MiniImpacketShell
 from impacket import version
 from impacket.smbconnection import SMBConnection
-from impacket import  LOG
+from impacket import LOG
 
 
 class SMBEnum(object):
