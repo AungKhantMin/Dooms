@@ -1,5 +1,6 @@
 import logging
 import subprocess
+import threading
 
 from Doom.module import logger
 from impacket import LOG
@@ -122,5 +123,28 @@ class Nikto(object):
 
     def defaultScan(self):
         output = \
-            subprocess.Popen(["sudo", "nikto", "-h"], stdout=subprocess.PIPE).communicate()[0]
+            subprocess.Popen(["sudo", "perl", "nikto.pl", "-h"], stdout=subprocess.PIPE).communicate()[0]
         return output
+
+    def multiPortScan(self, ip: str, ports: list):
+        '''
+            Use to scan Multi Port to determine open or not
+        '''
+        vulnerability = []
+        threads = []
+        try:
+            for port in ports:
+                t = threading.Thread(target=self.singlePortScan, args=(ip, port, vulnerability)
+                threads.append(t)
+
+            for t in threads:
+                t.start()
+
+            for t in threads:
+                t.join()
+        except KeyboardInterrupt:
+            exit(0)
+        except:
+            pass
+
+        return vulnerability
