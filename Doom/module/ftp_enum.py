@@ -66,3 +66,5 @@ ftp = FTPEnum('ftp.gnu.org')
 #ftp = FTPEnum('10.10.10.78')
 ftp.tryLogin()
 
+
+#script is not stable yet
