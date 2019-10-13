@@ -16,3 +16,6 @@ def doom():
     if 21 in open_port:
         # call FTP Service Module
         pass
+    if 53 in open_port:
+        #call DNS Service Module
+        pass
