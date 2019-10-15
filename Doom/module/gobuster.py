@@ -17,6 +17,15 @@ class GoBuster(object):
         self.thread = thread
         logger.init()
 
+    def setTarget(self, ip):
+        self.target = ip
+
+    def setPort(self, port):
+        self.port = port
+
+    def setThread(self, thread):
+        self.thread = thread
+
     def run(self):
         LOG.info("Running Gobuster Against The Server ..")
         # os.system("gobuster  dir -t 50 -w %s --url %s:%s" % (self.wordlist,self.target,self.port))

@@ -10,6 +10,12 @@ class FTPEnum(object):
         logger.init()
         self.ftp = FTP(self.target)
 
+    def setTarget(self, ip):
+        self.target = ip
+
+    def setPort(self, port):
+        self.port
+
     def tryLogin(self,user="anonymous",password="anonymous@"):
         try:
             LOG.info("Trying To Login With User %s .." %user)

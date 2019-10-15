@@ -15,6 +15,12 @@ class SMBVulnScan(object):
         self.console = self.client.consoles.console(self.cid)
         logger.init()
 
+    def setTarget(self, ip):
+        self.target = ip
+
+    def setPass(self, password):
+        self.password = password
+
     def check_ms17_010(self,target):
         LOG.info("Checking If Server is Vulnerable to MS17_010")
         self.console.write("use auxiliary/scanner/smb/smb_ms17_010")

@@ -47,8 +47,6 @@ class Use(Cmd):
         self.options = []
         self.module = ""
 
-
-
     def analyzeCommand(self,parse_commands : list):
         if 'show' in parse_commands[0]:
             if 'help' in parse_commands[1]:

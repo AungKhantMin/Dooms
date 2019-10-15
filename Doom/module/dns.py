@@ -10,6 +10,12 @@ class DNS(object):
         self.zone = zonename
         logger.init()
 
+    def setTarget(self, target):
+        self.target = target
+
+    def setZone(self, zonename):
+        self.zone
+
     def zoneTransfer(self):
         '''
             Perform Dns Zone transfer on target server and target zone

@@ -3,6 +3,8 @@ from __future__ import print_function
 
 import re
 import logging
+from cmd import Cmd
+
 from Doom.module import logger
 from Doom.module.smbclient import MiniImpacketShell
 from impacket import version
@@ -20,7 +22,14 @@ class SMBEnum(object):
         self.ignore_share = ["IPC$"]
         logger.init()
 
+    def setTarget(self, ip):
+        self.target = ip
 
+    def setUser(self, user):
+        self.user = user
+
+    def setPass(self, password):
+        self.password = password
 
     def tryLogin(self):
         '''
@@ -111,6 +120,7 @@ class SMBEnum(object):
                         #traceback.print_exc()
                     logging.error(str(e))
                     print("\n")
+
 
 
 gg  = SMBEnum("10.10.10.134")#,user="Administrator",password="thXLHM96BeKL0ER2")
