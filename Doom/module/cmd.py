@@ -1,6 +1,15 @@
 import sys
 
+from Doom.module.dns import DNS
+from Doom.module.gobuster import GoBuster
+from Doom.module.smb_enum import SMBEnum
+from Doom.module.smb_vuln import SMBVulnScan
+
+
 class Cmd(object):
+
+    line = ""
+
     def __init__(self):
         self.HEADER = '\033[95m'
         self.OKBLUE = '\033[94m'
@@ -14,7 +23,6 @@ class Cmd(object):
     def parser(self,command : str):
         commands = command.split(" ")
         return  commands
-
 
     def prompt(self,line = ""):
         if line != "":
@@ -37,7 +45,6 @@ class Cmd(object):
     def checkParam(self, options : list):
         pass
 
-
     def run(self):
         pass
 
@@ -57,7 +64,6 @@ class Use(Cmd):
             if self.checkParam(self.options):
                 self.run()
 
-
     def checkParam(self,options : list):
         pass
 
@@ -74,6 +80,37 @@ class Use(Cmd):
             parse_command = self.parser(command)
             self.analyzeCommand(parse_command)
 
+class Set(Use):
+    def __init__(self):
+        super(Use).__init__()
+
+    def analyzeCommand(self, parse_commands: list):
+        if 'set' in parse_commands[0]:
+            if self.line == 'smb_enum':
+                smben = SMBEnum()
+                # set0 target1 blahblah2 user3 blah4 pass5 blah6
+                smben.setTarget(parse_commands[2])
+                smben.setUser(parse_commands[4])
+                smben.setPass(parse_commands[6])
+
+            if self.line == 'smb_vuln':
+                smbVS = SMBVulnScan()
+                # set0 target1 blahblah2 pass3 blah4
+                smbVS.setTarget(parse_commands[2])
+                smbVS.setPass(parse_commands[4])
+
+            if self.line == 'gobuster':
+                gb = GoBuster()
+                # set0 target1 blahblah2 port3 blah4 thread5 blah6
+                gb.setTarget(parse_commands[2])
+                gb.setPort(parse_commands[4])
+                gb.setThread(parse_commands[6])
+
+            if self.line == 'dns':
+                smbVS = DNS()
+                # set0 target1 blahblah2 zone3 blah4
+                smbVS.setTarget(parse_commands[2])
+                smbVS.setZone(parse_commands[4])
 
 cmd = Cmd()
 

@@ -14,7 +14,7 @@ class DNS(object):
         self.target = target
 
     def setZone(self, zonename):
-        self.zone
+        self.zone = zonename
 
     def zoneTransfer(self):
         '''
