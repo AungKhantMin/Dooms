@@ -92,6 +92,7 @@ class Set(Use):
                 smben.setTarget(parse_commands[2])
                 smben.setUser(parse_commands[4])
                 smben.setPass(parse_commands[6])
+                smben.printSettedVar()
 
             if self.line == 'smb_vuln':
                 smbVS = SMBVulnScan()

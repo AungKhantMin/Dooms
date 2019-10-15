@@ -1,6 +1,9 @@
 import sys
-from module.nmap import Nmap
+
 from module.smb_vuln import *
+
+from Doom.module.nmap import Nmap
+
 
 def doom():
     open_port = Nmap.multiPortScan(sys.argv[1])

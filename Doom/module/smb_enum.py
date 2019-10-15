@@ -31,6 +31,10 @@ class SMBEnum(object):
     def setPass(self, password):
         self.password = password
 
+    #testing setter by printing
+    def printSettedVar(self):
+        print(self.target+" - "+self.user+" - "+self.password)
+
     def tryLogin(self):
         '''
             Setup a connection with smb server, authenticate using the give user name and password. if the user name and
