@@ -1,4 +1,10 @@
 import sys
+from Doom.module.dns import  DNS
+from Doom.module.ftp_enum import FTPEnum
+from Doom.module.smb_enum import SMBEnum
+from Doom.module.smb_vuln import SMBVulnScan
+from Doom.module.gobuster import GoBuster
+from Doom.module.nmap import *
 
 from Doom.module.dns import DNS
 from Doom.module.gobuster import GoBuster
