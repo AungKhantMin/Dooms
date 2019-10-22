@@ -12,7 +12,7 @@ class Cmd(object):
 
     def __init__(self):
         self.module = ""
-        self.avaliable_module = ['smb_enum','ftp_enum','ftp_vuln','gobuster','smb_vuln','dns','nmap']
+        self.avaliable_module = ['smb_enum','ftp_enum','ftp_vuln','gobuster','smb_vuln','dns']
         self.obj = None
 
     def parser(self,command : str):
@@ -58,12 +58,13 @@ class Cmd(object):
                 elif 'run' == str.lower(parse_commands[0]):
                     self.obj.run()
                 elif 'exit' == str.lower(parse_commands[0]):
-                    if self.module == "":
-                        exit(0)
-                    else:
-                        self.module = ""
+                    self.module = ""
+                    self.obj = None
                 else:
                     print(C.BOLD+C.FAIL+"[-] Unknown command : %s" % parse_commands[0] + C.ENDC)
+
+            elif 'exit' == str.lower(parse_commands[0]):
+                exit(0)
             elif parse_commands[0] == "\r":
                 pass
             elif parse_commands[0] == "help":
@@ -77,4 +78,4 @@ class Cmd(object):
     def help(self):
         print("\n\tShow available commands for current module\n")
         print("\tuse - Select Which module to use")
-        print("\tavaliable module - %s" % str(self.avaliable_module) ) 
+        print("\tavaliable module - %s" % str(self.avaliable_module) )

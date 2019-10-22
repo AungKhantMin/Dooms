@@ -1,26 +1,22 @@
 import sys
 
 from Doom.module.cmd import Cmd
-from Doom.module.nmap import  NMAP
+from Doom.module.color import C
 
-def doom():
-    open_port = NMAP.multiPortScan(sys.argv[1])
-    nmap_result = NMAP.defaultScan()
-    if 455 in open_port:
-        # call SMB related module
-        pass
+print(C.FAIL+C.BOLD+'''
 
-    if 80 or 443 in open_port:
-        # call Web related module
-        pass
 
-    if 21 in open_port:
-        # call FTP Service Module
-        pass
-    if 53 in open_port:
-        #call DNS Service Module
-        pass
-
+                     /$$$$$$$  /$$$$$$  /$$$$$$ /$$      /$$      
+                    | $$__  $$/$$__  $$/$$__  $| $$$    /$$$      
+                    | $$  \ $| $$  \ $| $$  \ $| $$$$  /$$$$      
+                    | $$  | $| $$  | $| $$  | $| $$ $$/$$ $$      
+                    | $$  | $| $$  | $| $$  | $| $$  $$$| $$      
+                    | $$  | $| $$  | $| $$  | $| $$\  $ | $$      
+                    | $$$$$$$|  $$$$$$|  $$$$$$| $$ \/  | $$      
+                    |_______/ \______/ \______/|__/     |__/      
+                                                                                                                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                                                                      
+'''+C.ENDC)
 
 cmd = Cmd()
 cmd.loop()
