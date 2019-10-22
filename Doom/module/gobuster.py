@@ -44,7 +44,3 @@ class GoBuster(object):
         else:
             LOG.info("BadLuck No Directory Found. Try Another Wordlist ...")
 
-
-go = GoBuster('10.10.10.146', wordlist="../wordlist/common.txt", port=443)
-
-go.run()

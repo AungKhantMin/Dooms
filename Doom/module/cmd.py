@@ -1,30 +1,23 @@
-import sys
-from Doom.module.dns import  DNS
-from Doom.module.ftp_enum import FTPEnum
-from Doom.module.smb_enum import SMBEnum
-from Doom.module.smb_vuln import SMBVulnScan
-from Doom.module.gobuster import GoBuster
-from Doom.module.nmap import *
-
 from Doom.module.dns import DNS
 from Doom.module.gobuster import GoBuster
-from Doom.module.smb_enum import SMBEnum
+from Doom.module.smb_enum import SMB_ENUM
 from Doom.module.smb_vuln import SMBVulnScan
 
+class C:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 class Cmd(object):
 
     line = ""
 
-    def __init__(self):
-        self.HEADER = '\033[95m'
-        self.OKBLUE = '\033[94m'
-        self.OKGREEN = '\033[92m'
-        self.WARNING = '\033[93m'
-        self.FAIL = '\033[91m'
-        self.ENDC = '\033[0m'
-        self.BOLD = '\033[1m'
-        self.UNDERLINE = '\033[4m'
+
 
     def parser(self,command : str):
         commands = command.split(" ")
@@ -43,9 +36,10 @@ class Cmd(object):
             parse_command = self.parser(command)
             self.analyzeCommand(parse_command)
 
-    def analyzeCommand(self,parse_commands : list):
+    def analyzeCommand(self,parse_commands : list, module=""):
         if 'use' in parse_commands[0]:
             use = Use()
+            use.module = parse_commands[1]
             use.loop(parse_commands[1])
 
     def checkParam(self, options : list):
@@ -60,15 +54,16 @@ class Use(Cmd):
         self.options = []
         self.module = ""
 
-    def analyzeCommand(self,parse_commands : list):
-        if 'show' in parse_commands[0]:
-            if 'help' in parse_commands[1]:
+    def analyzeCommand(self,parse_commands : list,module =""):
+        if 'show' in str.lower(parse_commands[0]):
+            if 'help' in str.lower(parse_commands[1]):
                 print("will print help")
-            elif 'options' in parse_commands[1]:
+            elif 'options' in str.lower(parse_commands[1]):
                 print("will show require parameter")
         elif 'run' in parse_commands[0]:
             if self.checkParam(self.options):
                 self.run()
+        elif 'set' in str.lower(parse_commands[0]):
 
     def checkParam(self,options : list):
         pass
@@ -85,40 +80,3 @@ class Use(Cmd):
             command = input(prompt)
             parse_command = self.parser(command)
             self.analyzeCommand(parse_command)
-
-class Set(Use):
-    def __init__(self):
-        super(Use).__init__()
-
-    def analyzeCommand(self, parse_commands: list):
-        if 'set' in parse_commands[0]:
-            if self.line == 'smb_enum':
-                smben = SMBEnum()
-                # set0 target1 blahblah2 user3 blah4 pass5 blah6
-                smben.setTarget(parse_commands[2])
-                smben.setUser(parse_commands[4])
-                smben.setPass(parse_commands[6])
-                smben.printSettedVar()
-
-            if self.line == 'smb_vuln':
-                smbVS = SMBVulnScan()
-                # set0 target1 blahblah2 pass3 blah4
-                smbVS.setTarget(parse_commands[2])
-                smbVS.setPass(parse_commands[4])
-
-            if self.line == 'gobuster':
-                gb = GoBuster()
-                # set0 target1 blahblah2 port3 blah4 thread5 blah6
-                gb.setTarget(parse_commands[2])
-                gb.setPort(parse_commands[4])
-                gb.setThread(parse_commands[6])
-
-            if self.line == 'dns':
-                smbVS = DNS()
-                # set0 target1 blahblah2 zone3 blah4
-                smbVS.setTarget(parse_commands[2])
-                smbVS.setZone(parse_commands[4])
-
-cmd = Cmd()
-
-cmd.loop()

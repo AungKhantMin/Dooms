@@ -1,9 +1,6 @@
 import sys
 
-from module.smb_vuln import *
-
-from Doom.module.nmap import Nmap
-
+from Doom.module.cmd import Cmd
 
 def doom():
     open_port = Nmap.multiPortScan(sys.argv[1])
@@ -22,3 +19,7 @@ def doom():
     if 53 in open_port:
         #call DNS Service Module
         pass
+
+
+cmd = Cmd()
+cmd.loop()

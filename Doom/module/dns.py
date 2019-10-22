@@ -40,6 +40,3 @@ class DNS(object):
 
 
 
-dns = DNS("10.10.10.123","friendzone.red")
-
-dns.zoneTransfer()

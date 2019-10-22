@@ -1,20 +1,16 @@
 from __future__ import division
 from __future__ import print_function
 
-import re
 import logging
-from cmd import Cmd
-
 from Doom.module import logger
 from Doom.module.smbclient import MiniImpacketShell
-from impacket import version
 from impacket.smbconnection import SMBConnection
 from impacket import LOG
 
 
-class SMBEnum(object):
+class SMB_ENUM(object):
 
-    def __init__(self,ip,user="Guest",password=""):
+    def __init__(self,ip="",user="Guest",password=""):
         self.target = ip
         self.port = 445
         self.user = user
@@ -31,9 +27,6 @@ class SMBEnum(object):
     def setPass(self, password):
         self.password = password
 
-    #testing setter by printing
-    def printSettedVar(self):
-        print(self.target+" - "+self.user+" - "+self.password)
 
     def tryLogin(self):
         '''
@@ -127,6 +120,3 @@ class SMBEnum(object):
 
 
 
-gg  = SMBEnum("10.10.10.134")#,user="Administrator",password="thXLHM96BeKL0ER2")
-gg.tryLogin()
-gg.enumerateShares()
