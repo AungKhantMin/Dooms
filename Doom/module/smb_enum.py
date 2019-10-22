@@ -27,11 +27,9 @@ class SMB_ENUM(object):
         self.user = user
         print("USER => %s" % self.user)
 
-
     def set_password(self, password):
         self.password = password
         print("PASSWORD => %s" % self.password)
-
 
     def show_help(self):
         print("\n\tShow available commands for current module\n")

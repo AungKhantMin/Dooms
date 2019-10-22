@@ -61,14 +61,12 @@ class Cmd(object):
                     exit(0)
                 else:
                     print(C.BOLD+C.FAIL+"[-] Unknown command : %s" % parse_commands[0] + C.ENDC)
+            elif parse_commands == "\r":
+                pass
             else:
                 print(C.BOLD+C.FAIL+"[-] Unknown command : %s" % parse_commands[0] + C.ENDC)
         except Exception as e:
             print(C.BOLD+C.FAIL+'[-] ' + str(e) + C.ENDC)
 
-    def checkParam(self, options : list):
-        pass
 
-    def run(self):
-        pass
 

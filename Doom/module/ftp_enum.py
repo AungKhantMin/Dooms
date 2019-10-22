@@ -10,7 +10,7 @@ class FTP_ENUM(object):
         self.port = port
         self.user = user
         self.password = passowrd
-        self.show_options("target","port" ,"user" ,"password" )
+        self.avaliable_opt = ["target","port" ,"user" ,"password" ]
         logger.init()
         self.ftp = FTP(self.target)
 
