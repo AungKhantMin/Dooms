@@ -58,7 +58,10 @@ class Cmd(object):
                 elif 'run' == str.lower(parse_commands[0]):
                     self.obj.run()
                 elif 'exit' == str.lower(parse_commands[0]):
-                    exit(0)
+                    if self.module == "":
+                        exit(0)
+                    else:
+                        self.module = ""
                 else:
                     print(C.BOLD+C.FAIL+"[-] Unknown command : %s" % parse_commands[0] + C.ENDC)
             elif parse_commands == "\r":
