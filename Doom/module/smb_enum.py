@@ -18,14 +18,26 @@ class SMB_ENUM(object):
         self.ignore_share = ["IPC$"]
         logger.init()
 
-    def setTarget(self, ip):
+    def set_target(self, ip):
         self.target = ip
 
-    def setUser(self, user):
+    def set_user(self, user):
         self.user = user
 
-    def setPass(self, password):
+    def set_pass(self, password):
         self.password = password
+
+    def show_help(self):
+        print("\n\tShow available commands for current module\n")
+        print("\tshow help - print this help")
+        print("\tshow options - list available options")
+        print("\tset - use to set required options\n")
+
+    def show_options(self):
+        print("\n\tShow Available options for current module\n")
+        print("\tTARGET - REMOTE TARGET IP ADDRESS")
+        print("\tUSER - USER NAME USE TO AUTHENTICATE TO REMOTE SERVER (OPTIONAL)")
+        print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER (OPTIONAL)\n")
 
 
     def tryLogin(self):

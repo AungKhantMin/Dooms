@@ -65,12 +65,3 @@ class FTPEnum(object):
 
     def listFile(self):
         pass
-
-ftp = FTPEnum('ftp.gnu.org')
-#ftp.tryLogin()
-
-#ftp = FTPEnum('10.10.10.78')
-ftp.tryLogin()
-
-
-#script is not stable yet
