@@ -64,12 +64,16 @@ class Cmd(object):
                         self.module = ""
                 else:
                     print(C.BOLD+C.FAIL+"[-] Unknown command : %s" % parse_commands[0] + C.ENDC)
-            elif parse_commands == "\r":
+            elif parse_commands[0] == "\r":
                 pass
+            elif parse_commands[0] == "help":
+                self.help()
             else:
                 print(C.BOLD+C.FAIL+"[-] Unknown command : %s" % parse_commands[0] + C.ENDC)
         except Exception as e:
             print(C.BOLD+C.FAIL+'[-] ' + str(e) + C.ENDC)
 
 
-
+    def help(self):
+        print("\n\tShow available commands for current module\n")
+        print()
