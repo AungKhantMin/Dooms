@@ -2,24 +2,56 @@ from Doom.module.ftplib import FTP
 from impacket import LOG
 from Doom.module import logger
 import logging
+from Doom.module.color import C
 
-class FTPEnum(object):
-    def __init__(self,ip,port=21,user="anonymous",passowrd="anonymous@"):
-        self.target = ip
+class FTP_ENUM(object):
+    def __init__(self,port=21,user="anonymous",passowrd="anonymous@"):
+        self.target = ""
         self.port = port
+        self.user = user
+        self.password = passowrd
         logger.init()
         self.ftp = FTP(self.target)
 
-    def setTarget(self, ip):
+    def set_target(self, ip):
         self.target = ip
+        print("TARGET => %s" % self.target)
 
-    def setPort(self, port):
-        self.port
+    def set_port(self, port):
+        self.port = port
+        print("PORT => %s" % self.port)
 
-    def tryLogin(self,user="anonymous",password="anonymous@"):
+    def set_user(self,user):
+        self.user = user
+        print("USER => %s" % self.user)
+
+    def set_password(self,password):
+        self.password = password
+        print("PASSWORD => %s" % self.password)
+
+    def show_options(self):
+        print("\n\tShow Available options for current module\n")
+        print("\tTARGET - REMOTE TARGET IP ADDRESS")
+        print("\tUSER - USER NAME USE TO AUTHENTICATE TO REMOTE SERVER (OPTIONAL)")
+        print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER (OPTIONAL)\n")
+        print("\tPORT - TARGET PORT RUNNING FTP SERVICE")
+
+        print("\n\tCurrent Settings\n")
+
+        if self.target != "":
+            print("\tTARGET - %s" % self.target)
+        if self.user != "Guest":
+            print("\tUSER - %s" % self.user)
+        if self.password != "":
+            print("\tPASSWORD - %s" % self.password)
+        if self.port is not None:
+            print("\tPORT - %d\n" % self.port)
+
+
+    def tryLogin(self):
         try:
-            LOG.info("Trying To Login With User %s .." %user)
-            output = self.ftp.login()
+            LOG.info("Trying To Login With User %s .." % self.user)
+            output = self.ftp.login(user=self.user,passwd=self.password)
             LOG.info(output)
             self.listDirectoryRescursive()
         except Exception as e:
@@ -63,5 +95,9 @@ class FTPEnum(object):
             self.ftp.cwd("..")
 
 
-    def listFile(self):
-        pass
+    def run(self):
+        try:
+            self.tryLogin()
+            self.listDirectoryRescursive()
+        except Exception as e:
+            print(C.FAIL+C.BOLD+'[-] ' +str(e)+C.ENDC)

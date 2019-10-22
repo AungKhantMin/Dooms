@@ -1,10 +1,11 @@
 import sys
 
 from Doom.module.cmd import Cmd
+from Doom.module.nmap import  NMAP
 
 def doom():
-    open_port = Nmap.multiPortScan(sys.argv[1])
-    nmap_result = Nmap.defaultScan()
+    open_port = NMAP.multiPortScan(sys.argv[1])
+    nmap_result = NMAP.defaultScan()
     if 455 in open_port:
         # call SMB related module
         pass

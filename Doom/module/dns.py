@@ -5,16 +5,20 @@ from Doom.module import  logger
 
 
 class DNS(object):
-    def __init__(self,ip,zonename):
-        self.target = ip
-        self.zone = zonename
+    def __init__(self):
+        self.target = ""
+        self.zone = ""
         logger.init()
 
     def setTarget(self, target):
         self.target = target
+        print("TARGET => %s" % self.target)
+
 
     def setZone(self, zonename):
         self.zone = zonename
+        print("ZONE => %s" % self.zone)
+
 
     def zoneTransfer(self):
         '''

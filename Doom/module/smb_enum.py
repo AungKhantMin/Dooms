@@ -6,7 +6,7 @@ from Doom.module import logger
 from Doom.module.smbclient import MiniImpacketShell
 from impacket.smbconnection import SMBConnection
 from impacket import LOG
-
+from Doom.module.color import C
 
 class SMB_ENUM(object):
 
@@ -16,16 +16,22 @@ class SMB_ENUM(object):
         self.user = user
         self.password = password
         self.ignore_share = ["IPC$"]
+        self.avaliable_opt = ["target","user","password"]
         logger.init()
 
     def set_target(self, ip):
         self.target = ip
+        print("TARGET => %s" % self.target)
 
     def set_user(self, user):
         self.user = user
+        print("USER => %s" % self.user)
 
-    def set_pass(self, password):
+
+    def set_password(self, password):
         self.password = password
+        print("PASSWORD => %s" % self.password)
+
 
     def show_help(self):
         print("\n\tShow available commands for current module\n")
@@ -39,6 +45,14 @@ class SMB_ENUM(object):
         print("\tUSER - USER NAME USE TO AUTHENTICATE TO REMOTE SERVER (OPTIONAL)")
         print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER (OPTIONAL)\n")
 
+        print("\n\tCurrent Settings\n")
+
+        if self.target != "":
+            print("\tTARGET - %s" % self.target)
+        if self.user != "Guest":
+            print("\tUSER - %s" % self.user)
+        if self.password != "":
+            print("\tPASSWORD - %s" % self.password)
 
     def tryLogin(self):
         '''
@@ -89,6 +103,7 @@ class SMB_ENUM(object):
                     self.shell.do_cd("..")
                     share = temp_share
 
+
     def enumerateShares(self):
         '''
 
@@ -130,5 +145,9 @@ class SMB_ENUM(object):
                     logging.error(str(e))
                     print("\n")
 
-
-
+    def run(self):
+        try:
+            self.tryLogin()
+            self.enumerateShares()
+        except:
+            pass

@@ -6,12 +6,12 @@ from Doom.module import logger
 
 
 
-class GoBuster(object):
+class GOBUSTER(object):
     '''
     Run Directory BruteForcing Against Web Server using dirb small-medium  as wordlist and gobuster
     '''
-    def __init__(self,ip,port=80,wordlist="../wordlist/directory-list-2.3-medium.txt",thread=50):
-        self.target = ip
+    def __init__(self,port=80,wordlist="../wordlist/directory-list-2.3-medium.txt",thread=50):
+        self.target = ""
         self.port = port
         self.wordlist = wordlist
         self.thread = thread
