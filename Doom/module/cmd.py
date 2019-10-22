@@ -76,4 +76,5 @@ class Cmd(object):
 
     def help(self):
         print("\n\tShow available commands for current module\n")
-        print()
+        print("\tuse - Select Which module to use")
+        print("\tavaliable module - %s" % str(self.avaliable_module) ) 
