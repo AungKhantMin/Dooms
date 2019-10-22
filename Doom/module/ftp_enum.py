@@ -10,6 +10,7 @@ class FTP_ENUM(object):
         self.port = port
         self.user = user
         self.password = passowrd
+        self.show_options("target","port" ,"user" ,"password" )
         logger.init()
         self.ftp = FTP(self.target)
 
@@ -28,6 +29,12 @@ class FTP_ENUM(object):
     def set_password(self,password):
         self.password = password
         print("PASSWORD => %s" % self.password)
+
+    def show_help(self):
+        print("\n\tShow available commands for current module\n")
+        print("\tshow help - print this help")
+        print("\tshow options - list available options")
+        print("\tset - use to set required options\n")
 
     def show_options(self):
         print("\n\tShow Available options for current module\n")
