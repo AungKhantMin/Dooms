@@ -4,6 +4,7 @@ from Doom.module.smb_enum import SMB_ENUM
 from Doom.module.smb_vuln import SMB_VULN
 from Doom.module.color import C
 from Doom.module.ftp_enum import FTP_ENUM
+from Doom.module.nmap import NMAP
 
 
 class Cmd(object):
@@ -12,7 +13,7 @@ class Cmd(object):
 
     def __init__(self):
         self.module = ""
-        self.avaliable_module = ['smb_enum','ftp_enum','ftp_vuln','gobuster','smb_vuln','dns']
+        self.avaliable_module = ['smb_enum','ftp_enum','ftp_vuln','gobuster','smb_vuln','dns','nmap']
         self.obj = None
 
     def parser(self,command : str):
@@ -79,3 +80,4 @@ class Cmd(object):
         print("\n\tShow available commands for current module\n")
         print("\tuse - Select Which module to use")
         print("\tavaliable module - %s" % str(self.avaliable_module) )
+        print("\texit - Exit from program")
