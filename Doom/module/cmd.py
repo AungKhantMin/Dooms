@@ -84,4 +84,5 @@ class Cmd(object):
         print("\n\tShow available commands for current module\n")
         print("\tuse - Select Which module to use")
         print("\tavaliable module - %s" % str(self.avaliable_module) )
+        print("\tuse '!' to run shell command - E.g. !ls, !pwd !ls -al")
         print("\texit - Exit from program")
