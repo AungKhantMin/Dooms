@@ -42,10 +42,10 @@ class Cmd(object):
                 else:
                     print(C.BOLD+C.FAIL+"No module name %s" % self.module + C.ENDC)
             elif self.obj is not None:
-                if 'show' in parse_commands[0]:
+                if 'help' == str.lower(parse_commands[0]):
+                    self.obj.show_help()
+                elif 'show' in parse_commands[0]:
                     cmd = parse_commands[1]
-                    if 'help' == str.lower(cmd):
-                        self.obj.show_help()
                     if 'options' == str.lower(cmd):
                         self.obj.show_options()
                 elif 'set' == str.lower(parse_commands[0]):

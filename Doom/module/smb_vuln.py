@@ -34,7 +34,7 @@ class SMB_VULN(object):
 
     def show_help(self):
         print("\n\tShow available commands for current module\n")
-        print("\tshow help - print this help")
+        print("\thelp - print this help")
         print("\tshow options - list available options")
         print("\tset - use to set required options\n")
 

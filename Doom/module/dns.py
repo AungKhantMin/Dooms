@@ -34,7 +34,7 @@ class DNS(object):
 
     def show_help(self):
         print("\n\tShow available commands for current module\n")
-        print("\tshow help - print this help")
+        print("\thelp - print this help")
         print("\tshow options - list available options")
         print("\tset - use to set required options\n")
 
@@ -49,6 +49,7 @@ class DNS(object):
             LOG.info("Trying To Perform Zone Transfer on %s .." % self.target)
             output = subprocess.Popen(["dig","axfr","@%s" % self.target,"%s" % self.zone],stdout=subprocess.PIPE).communicate()[0]
             output = str(output,'UTF-8').split("\n")
+            print(output)
             domains_list = []
             for string in output:
                 if (".%s" % self.zone) in string:
