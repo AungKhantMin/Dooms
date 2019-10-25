@@ -5,7 +5,7 @@ from Doom.module.smb_vuln import SMB_VULN
 from Doom.module.color import C
 from Doom.module.ftp_enum import FTP_ENUM
 from Doom.module.nmap import NMAP
-
+from os import system
 
 class Cmd(object):
 
@@ -66,10 +66,14 @@ class Cmd(object):
 
             elif 'exit' == str.lower(parse_commands[0]):
                 exit(0)
-            elif parse_commands[0] == "\r":
+            elif parse_commands[0] == "":
                 pass
             elif parse_commands[0] == "help":
                 self.help()
+            elif parse_commands[0][0] == "!":
+                parse_commands[0] = parse_commands[0][1::]
+                cmd = str.join(" ",parse_commands)
+                system(cmd)
             else:
                 print(C.BOLD+C.FAIL+"[-] Unknown command : %s" % parse_commands[0] + C.ENDC)
         except Exception as e:
