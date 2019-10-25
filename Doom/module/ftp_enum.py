@@ -12,7 +12,8 @@ class FTP_ENUM(object):
         self.password = passowrd
         self.avaliable_opt = ["target","port" ,"user" ,"password" ]
         logger.init()
-        self.ftp = FTP(self.target)
+        self.ftp = None
+
 
     def set_target(self, ip):
         self.target = ip
@@ -57,6 +58,7 @@ class FTP_ENUM(object):
 
     def tryLogin(self):
         try:
+            self.ftp = FTP(self.target)
             LOG.info("Trying To Login With User %s .." % self.user)
             output = self.ftp.login(user=self.user,passwd=self.password)
             LOG.info(output)
@@ -105,6 +107,5 @@ class FTP_ENUM(object):
     def run(self):
         try:
             self.tryLogin()
-            self.listDirectoryRescursive()
         except Exception as e:
             print(C.FAIL+C.BOLD+'[-] ' +str(e)+C.ENDC)
