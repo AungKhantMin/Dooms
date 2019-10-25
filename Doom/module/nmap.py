@@ -1,11 +1,11 @@
 import subprocess
 import threading
 import socket
-
+from Doom.module.color import C
 
 class NMAP(object):
-    def __init__(self, ip):
-        self.target = ip
+    def __init__(self ):
+        self.target = None
         self.commonPort = [1, 3, 4, 6, 7, 9, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 30, 32, 33, 37, 42, 43, 49, 53, 70,
                            79, 80, 81, 82, 83, 84, 85, 88,
                            89, 90, 99, 100, 106, 109, 110, 111, 113, 119, 125, 135, 139, 143, 144, 146, 161, 163, 179,
@@ -117,34 +117,63 @@ class NMAP(object):
                            55055, 55056, 55555, 55600, 56737, 56738, 57294, 57797, 58080, 60020, 60443, 61532, 61900,
                            62078, 63331,
                            64623, 64680, 65000, 65129, 65389]
+        self.avaliable_scan = ["default_scan","default_script_scan","udp_scan","tcp_full_scan","udp_full_scan"]
+        self.scan_type = "default_scan"
+        self.avaliable_opt = ["target","scan_type"]
 
-    def defaultScan(self):
+    def set_target(self,ip : str):
+        self.target = ip
+        print("TARGET => %s" % self.target)
+
+    def set_scan_type(self,scantype : str):
+        if scantype in self.avaliable_scan:
+            self.scan_type = scantype
+            print("SCAN_TYPE => %s" % scantype)
+        else:
+            print(C.BOLD+C.FAIL+"[-] Unknown Scan Type : %s " % scantype )
+
+    def show_help(self):
+        print("\n\tShow available commands for current module\n")
+        print("\tshow help - print this help")
+        print("\tshow options - list available options")
+        print("\tset - use to set required options\n")
+
+    def show_options(self):
+        print("\n\tShow Available options for current module\n")
+        print("\tTARGET - REMOTE TARGET IP ADDRESS")
+        print("\tSCAN_TYPE - TYPE OF SCAN TO PERFORM AGAINST TARGET (OPTIONAL)")
+        print("\n\tCurrent Settings\n")
+
+        if self.target is not None:
+            print("\tTARGET - %s" % self.target)
+        elif self.scan_type != "":
+            print("\tSCAN_TYPE - %s\n" % self.scan_type)
+
+
+
+    def default_scan(self):
         output = \
         subprocess.Popen(["sudo", "nmap", "-sS", "-A", "-sV", self.target], stdout=subprocess.PIPE).communicate()[0]
         return output
 
-    def defaultConnectScan(self):
+    def default_script_scan(self):
         output = \
         subprocess.Popen(["sudo", "nmap", "-sC", "-A", "-sV", self.target], stdout=subprocess.PIPE).communicate()[0]
         return output
 
-    def udpScan(self):
+    def udp_scan(self):
         output = \
         subprocess.Popen(["sudo", "nmap", "-sU", "-A", "-sV", self.target], stdout=subprocess.PIPE).communicate()[0]
         return output
 
-    def tcpFullScan(self):
-        output = subprocess.Popen(["sudo", "nmap", "-sS", "-A", "-sV", "-p-", self.target],
+    def tcp_full_scan(self):
+        output = subprocess.Popen(["sudo", "nmap", "-p-", self.target],
                                   stdout=subprocess.PIPE).communicate()[0]
         return output
 
-    def tcpConnectFullScan(self):
-        output = subprocess.Popen(["sudo", "nmap", "-sC", "-A", "-sV", "-p-", self.target],
-                                  stdout=subprocess.PIPE).communicate()[0]
-        return output
 
-    def udpFullScan(self):
-        output = subprocess.Popen(["sudo", "nmap", "-sU", "-A", "-sV", "-p-", self.target],
+    def udp_full_scan(self):
+        output = subprocess.Popen(["sudo", "nmap", "-sU", "-p-", self.target],
                                   stdout=subprocess.PIPE).communicate()[0]
         return output
 
@@ -188,3 +217,8 @@ class NMAP(object):
             exit(0)
         except:
             pass
+
+    def run(self):
+
+        output = eval("self."+self.scan_type)()
+        print(str(output,'UTF-8'))
