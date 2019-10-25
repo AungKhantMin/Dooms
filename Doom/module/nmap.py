@@ -142,6 +142,7 @@ class NMAP(object):
         print("\n\tShow Available options for current module\n")
         print("\tTARGET - REMOTE TARGET IP ADDRESS")
         print("\tSCAN_TYPE - TYPE OF SCAN TO PERFORM AGAINST TARGET (OPTIONAL)")
+        print("\tAVAILABLE SCAN_TYPE : %s" % str(self.avaliable_scan))
         print("\n\tCurrent Settings\n")
 
         if self.target is not None:
