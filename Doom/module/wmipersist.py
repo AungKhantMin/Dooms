@@ -67,6 +67,23 @@ class WMIPERSISTENCE:
         if options.hashes is not None:
             self.__lmhash, self.__nthash = options.hashes.split(':')
 
+    def show_help(self):
+        print(''' 
+        This software is provided under under a slightly modified version
+        of the Apache Software License. See the accompanying LICENSE file
+        for more information.
+
+        This script creates/removes a WMI Event Consumer/Filter and link
+        between both to execute Visual Basic based on the WQL filter
+        or timer specified''')
+
+    def show_option(self):
+        print("\n\Show available option for this module")
+        print("USERNAME")
+        print("PASSWORD")
+        print("DOMAIN")
+        print("OPTIONS")
+
     @staticmethod
     def checkError(banner, resp):
         if resp.GetCallStatus(0) != 0:

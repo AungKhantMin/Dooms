@@ -102,6 +102,40 @@ class DumpSecrets:
         if options.hashes is not None:
             self.__lmhash, self.__nthash = options.hashes.split(':')
 
+    def show_help(self):
+        print('''
+        This software is provided under a slightly modified version
+        of the Apache Software License. See the accompanying LICENSE file
+        for more information.
+
+        Description: Performs various techniques to dump hashes from the
+              remote machine without executing any agent there.
+              For SAM and LSA Secrets (including cached creds)
+              we try to read as much as we can from the registry
+              and then we save the hives in the target system
+              (%SYSTEMROOT%\\Temp dir) and read the rest of the
+              data from there.
+              For NTDS.dit we either:
+                a. Get the domain users list and get its hashes
+                   and Kerberos keys using [MS-DRDS] DRSGetNCChanges()
+                   call, replicating just the attributes we need.
+                b. Extract NTDS.dit via vssadmin executed  with the
+                   smbexec approach.
+                   It's copied on the temp dir and parsed remotely.
+
+              The script initiates the services required for its working
+              if they are not available (e.g. Remote Registry, even if it is
+              disabled). After the work is done, things are restored to the
+              original state.''')
+
+    def show_options(self):
+        print("\n\Show available option for this module")
+        print("remoteName")
+        print("USERNAME")
+        print("PASSWORD")
+        print("DOMAIN")
+        print("OTPIONS")
+
     def connect(self):
         self.__smbConnection = SMBConnection(self.__remoteName, self.__remoteHost)
         if self.__doKerberos:

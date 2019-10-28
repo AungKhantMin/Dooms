@@ -51,6 +51,26 @@ class SAMRDump:
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
 
+    def show_help(self):
+        print('''
+        This software is provided under under a slightly modified version
+        of the Apache Software License. See the accompanying LICENSE file
+        for more information.
+
+        Description: DCE/RPC SAMR dumper.''')
+
+    def show_options(self):
+        print("\n\Show available option for this module")
+        print("USERNAME")
+        print("PASSWORD")
+        print("DOMAIN")
+        print("OPTIONS.HASHES")
+        print("OPTIONS.AESKEY")
+        print("OPTIONS.K")
+        print("OPTIONS.DC_IP")
+        print("INT(OPTIONS.PORT)")
+        print("OPTIONS.CSV")
+
     @staticmethod
     def getUnixTime(t):
         t -= 116444736000000000

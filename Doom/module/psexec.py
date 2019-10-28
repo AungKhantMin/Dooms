@@ -78,6 +78,30 @@ class PSEXEC:
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
 
+    def show_help(self):
+        print('''
+        This software is provided under under a slightly modified version
+        of the Apache Software License. See the accompanying LICENSE file
+        for more information.
+   
+        PSEXEC like functionality example using RemComSvc (https://github.com/kavika13/RemCom''')
+
+    def show_options(self):
+        print("\n\Show available option for this module")
+        print("COMMAND")
+        print("OPTIONS.PATH")
+        print("OPTIONS.FILE")
+        print("OPTIONS.C")
+        print("INT(OPTIONS.PORT)")
+        print("USERNAME")
+        print("PASSWORD")
+        print("DOMAIN")
+        print("OPTIONS.HASHES")
+        print("OPTIONS.AESKEY")
+        print("OPTIONS.K")
+        print("OPTIONS.DC_IP")
+        print("OPTIONS.SERVICE_NAME")
+
     def run(self, remoteName, remoteHost):
 
         stringbinding = r'ncacn_np:%s[\pipe\svcctl]' % remoteName

@@ -34,6 +34,23 @@ class LSALookupSid:
         445: {'bindstr': r'ncacn_np:%s[\pipe\lsarpc]', 'set_host': True},
     }
 
+    def show_help(self):
+        print('''
+        This software is provided under under a slightly modified version
+        of the Apache Software License. See the accompanying LICENSE file
+        for more information.
+
+        DCE/RPC lookup sid brute forcer example''')
+
+    def show_options(self):
+        print("\n\Show available option for this module")
+        print("USERNAME")
+        print("PASSWORD")
+        print("DOMAIN")
+        print("INT(OPTIONS.PORT)")
+        print("OPTIONS.HASHES")
+        print("OPTIONS.DOMAIN_SIDS")
+        print("OPTIONS.MAXRID")
     def __init__(self, username='', password='', domain='', port=None,
                  hashes=None, domain_sids=False, maxRid=4000):
 

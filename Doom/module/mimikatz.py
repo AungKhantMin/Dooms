@@ -75,6 +75,14 @@ class MimikatzShell(cmd.Cmd):
         self.key = dh.getSharedSecret(blob['y'][::-1])[-16:][::-1]
         self.pHandle = resp['phMimi']
 
+    def show_help(self):
+        print('''
+        This software is provided under under a slightly modified version
+        of the Apache Software License. See the accompanying LICENSE file
+        for more information.
+
+        Description: Mini shell to control a remote mimikatz RPC server developed by @gentilkiwi''')
+
     def emptyline(self):
         pass
 

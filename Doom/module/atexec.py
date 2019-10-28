@@ -45,6 +45,27 @@ class TSCH_EXEC:
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
 
+    def show_help(self):
+        print('''
+        This software is provided under under a slightly modified version
+        of the Apache Software License. See the accompanying LICENSE file
+        for more information.
+
+        ATSVC example for some functions implemented, creates, enums, runs, delete jobs
+        This example executes a command on the target machine through the Task Scheduler
+        service. Returns the output of such command''')
+
+    def show_options(self):
+        print("\n\Show available option for this module")
+        print("USERNAME")
+        print("PASSWORD")
+        print("DOMAIN")
+        print("OPTIONS.HASHES")
+        print("OPTIONS.AESKEY")
+        print("OPTIONS.K")
+        print("OPTIONS.DC_IP")
+        print("' '")
+        print("JOIN(OPTIONS.COMMANDS)")
     def play(self, addr):
         stringbinding = r'ncacn_np:%s[\pipe\atsvc]' % addr
         rpctransport = transport.DCERPCTransportFactory(stringbinding)
