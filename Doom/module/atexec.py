@@ -32,7 +32,7 @@ from impacket.dcerpc.v5.rpcrt import RPC_C_AUTHN_GSS_NEGOTIATE
 
 class TSCH_EXEC:
     def __init__(self, username='', password='', domain='', hashes=None, aesKey=None, doKerberos=False, kdcHost=None,
-                 command=None):
+                 command= ''):
         self.__username = username
         self.__password = password
         self.__domain = domain
@@ -42,6 +42,7 @@ class TSCH_EXEC:
         self.__doKerberos = doKerberos
         self.__kdcHost = kdcHost
         self.__command = command
+        self.addr = None
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
 
@@ -57,17 +58,17 @@ class TSCH_EXEC:
 
     def show_options(self):
         print("\n\Show available option for this module")
-        print("USERNAME")
-        print("PASSWORD")
-        print("DOMAIN")
-        print("OPTIONS.HASHES")
-        print("OPTIONS.AESKEY")
-        print("OPTIONS.K")
-        print("OPTIONS.DC_IP")
-        print("' '")
-        print("JOIN(OPTIONS.COMMANDS)")
-    def play(self, addr):
-        stringbinding = r'ncacn_np:%s[\pipe\atsvc]' % addr
+        print("\tUSERNAME - USERNAME USE TO AUTHENTICATE TO REMOTE SERVER")
+        print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER")
+        print("\tDOMAIN")
+        print("\tHASHES - NTLM hashes, format is LMHASH:NTHASH")
+        print("\tAESKEY - AES key to use for Kerberos Authentication (128 or 256 bits)")
+        print("\tKERBEROES - Use Kerberos authentication. Grabs credentials from ccache file (KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the ones specified in the command line")
+        print("\tDC_IP - IP Address of the domain controller. If omitted it will use the domain part (FQDN) specified in the target parameter")
+        print("\t' '")
+        print("\tJOIN(OPTIONS.COMMANDS)")
+    def exec(self):
+        stringbinding = r'ncacn_np:%s[\pipe\atsvc]' % self.addr
         rpctransport = transport.DCERPCTransportFactory(stringbinding)
 
         if hasattr(rpctransport, 'set_credentials'):
@@ -197,68 +198,3 @@ class TSCH_EXEC:
 
 
 # Process command-line arguments.
-if __name__ == '__main__':
-    print(version.BANNER)
-    # Init the example's logger theme
-    logger.init()
-
-    logging.warning("This will work ONLY on Windows >= Vista")
-
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('target', action='store', help='[[domain/]username[:password]@]<targetName or address>')
-    parser.add_argument('command', action='store', nargs='*', default=' ', help='command to execute at the target ')
-    parser.add_argument('-debug', action='store_true', help='Turn DEBUG output ON')
-
-    group = parser.add_argument_group('authentication')
-
-    group.add_argument('-hashes', action="store", metavar="LMHASH:NTHASH", help='NTLM hashes, format is LMHASH:NTHASH')
-    group.add_argument('-no-pass', action="store_true", help='don\'t ask for password (useful for -k)')
-    group.add_argument('-k', action="store_true",
-                       help='Use Kerberos authentication. Grabs credentials from ccache file '
-                            '(KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the '
-                            'ones specified in the command line')
-    group.add_argument('-aesKey', action="store", metavar="hex key", help='AES key to use for Kerberos Authentication '
-                                                                          '(128 or 256 bits)')
-    group.add_argument('-dc-ip', action='store', metavar="ip address", help='IP Address of the domain controller. '
-                                                                            'If omitted it will use the domain part (FQDN) specified in the target parameter')
-
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(1)
-
-    options = parser.parse_args()
-
-    if ''.join(options.command) == ' ':
-        logging.error('You need to specify a command to execute!')
-        sys.exit(1)
-
-    if options.debug is True:
-        logging.getLogger().setLevel(logging.DEBUG)
-    else:
-        logging.getLogger().setLevel(logging.INFO)
-
-    import re
-
-    domain, username, password, address = re.compile('(?:(?:([^/@:]*)/)?([^@:]*)(?::([^@]*))?@)?(.*)').match(
-        options.target).groups('')
-
-    # In case the password contains '@'
-    if '@' in address:
-        password = password + '@' + address.rpartition('@')[0]
-        address = address.rpartition('@')[2]
-
-    if domain is None:
-        domain = ''
-
-    if password == '' and username != '' and options.hashes is None and options.no_pass is False and options.aesKey is None:
-        from getpass import getpass
-
-        password = getpass("Password:")
-
-    if options.aesKey is not None:
-        options.k = True
-
-    atsvc_exec = TSCH_EXEC(username, password, domain, options.hashes, options.aesKey, options.k, options.dc_ip,
-                           ' '.join(options.command))
-    atsvc_exec.play(address)

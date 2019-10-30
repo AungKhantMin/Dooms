@@ -241,7 +241,7 @@ class SMBEXEC:
     def show_options(self):
         print("\n\tShow Available options for current module\n")
         print("\tTARGET - REMOTE TARGET IP ADDRESS")
-        print("\tUSER - USER NAME USE TO AUTHENTICATE TO REMOTE SERVER ")
+        print("\tUSER - USERNAME USE TO AUTHENTICATE TO REMOTE SERVER ")
         print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER")
         print("\tPORT - TARGET PORT RUNNING SMB SERVICE DEFAULT is 445 (139,445) (OPTIONAL)")
         print("\tMODE - SERVER OR SHARE MODE TO USE DEFAULT IS SHARE")

@@ -41,7 +41,7 @@ CODEC = sys.stdout.encoding
 
 
 class WMIEXEC:
-    def __init__(self, command='', username='', password='', domain='', hashes=None, aesKey=None, share=None,
+    def __init__(self, command='', username='', password='', domain='', hashes=None, aesKey=None, share='ADMINS$',
                  noOutput=False, doKerberos=False, kdcHost=None):
         self.__command = command
         self.__username = username
@@ -55,6 +55,7 @@ class WMIEXEC:
         self.__doKerberos = doKerberos
         self.__kdcHost = kdcHost
         self.shell = None
+        self.target=None
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
 
@@ -71,21 +72,22 @@ class WMIEXEC:
         Drawback is it needs DCOM, hence, I have to be able to access
         DCOM ports at the target machine''')
 
-    def show_option(self):
+    def show_options(self):
         print("\n\Show available option for this module")
-        print("USERNAME")
-        print("PASSWORD")
-        print("DOMAIN")
-        print("OPTIONS.HASHES")
-        print("OPTIONS.AESKEY")
-        print("OPTIONS.SHARE")
-        print("OPTIONS.NOOUTPUT")
-        print("OPTIONS.K")
-        print("OPTIONS.DC_IP")
+        print("\tUSER - USERNAME USE TO AUTHENTICATE TO REMOTE SERVER")
+        print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER")
+        print("\tDOMAIN")
+        print("\tCOMMAND - command to execute at the target. If empty it will launch a semi-interactive shell")
+        print("\tHASHES - NTLM hashes, format is LMHASH:NTHASH")
+        print("\tAESKEY - AES key to use for Kerberos Authentication (128 or 256 bits)")
+        print("\tSHARE - share where the output will be grabbed from  (default ADMIN$)")
+        print("\tNOOUTPUT - whether or not to print the output (no SMB connection created)")
+        print("\tKERBEROS - Use Kerberos authentication. Grabs credentials from ccache file (KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the ''ones specified in the command line")
+        print("\tDC_IP - IP Address of the domain controller. If ommited it use the domain part (FQDN) specified in the target paramete")
 
-    def run(self, addr):
+    def exec(self):
         if self.__noOutput is False:
-            smbConnection = SMBConnection(addr, addr)
+            smbConnection = SMBConnection(self.target)
             if self.__doKerberos is False:
                 smbConnection.login(self.__username, self.__password, self.__domain, self.__lmhash, self.__nthash)
             else:
@@ -104,7 +106,7 @@ class WMIEXEC:
         else:
             smbConnection = None
 
-        dcom = DCOMConnection(addr, self.__username, self.__password, self.__domain, self.__lmhash, self.__nthash,
+        dcom = DCOMConnection(self.target, self.__username, self.__password, self.__domain, self.__lmhash, self.__nthash,
                               self.__aesKey, oxidResolver=True, doKerberos=self.__doKerberos, kdcHost=self.__kdcHost)
         try:
             iInterface = dcom.CoCreateInstanceEx(wmi.CLSID_WbemLevel1Login, wmi.IID_IWbemLevel1Login)
@@ -133,6 +135,13 @@ class WMIEXEC:
         if smbConnection is not None:
             smbConnection.logoff()
         dcom.disconnect()
+
+    def run(self):
+        try:
+             self.exec()
+        except Exception as e:
+            if logging.getLogger().level == logging.DEBUG:
+                logging.critical(str(e))
 
 
 class RemoteShell(cmd.Cmd):
@@ -354,102 +363,3 @@ def load_smbclient_auth_file(path):
 
 
 # Process command-line arguments.
-if __name__ == '__main__':
-    # Init the example's logger theme
-    logger.init()
-    print(version.BANNER)
-
-    parser = argparse.ArgumentParser(add_help=True, description="Executes a semi-interactive shell using Windows "
-                                                                "Management Instrumentation.")
-    parser.add_argument('target', action='store', help='[[domain/]username[:password]@]<targetName or address>')
-    parser.add_argument('-share', action='store', default='ADMIN$', help='share where the output will be grabbed from '
-                                                                         '(default ADMIN$)')
-    parser.add_argument('-nooutput', action='store_true', default=False, help='whether or not to print the output '
-                                                                              '(no SMB connection created)')
-    parser.add_argument('-debug', action='store_true', help='Turn DEBUG output ON')
-    parser.add_argument('-codec', action='store', help='Sets encoding used (codec) from the target\'s output (default '
-                                                       '"%s"). If errors are detected, run chcp.com at the target, '
-                                                       'map the result with '
-                                                       'https://docs.python.org/2.4/lib/standard-encodings.html and then execute wmiexec.py '
-                                                       'again with -codec and the corresponding codec ' % CODEC)
-
-    parser.add_argument('command', nargs='*', default=' ', help='command to execute at the target. If empty it will '
-                                                                'launch a semi-interactive shell')
-
-    group = parser.add_argument_group('authentication')
-
-    group.add_argument('-hashes', action="store", metavar="LMHASH:NTHASH", help='NTLM hashes, format is LMHASH:NTHASH')
-    group.add_argument('-no-pass', action="store_true", help='don\'t ask for password (useful for -k)')
-    group.add_argument('-k', action="store_true",
-                       help='Use Kerberos authentication. Grabs credentials from ccache file '
-                            '(KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the '
-                            'ones specified in the command line')
-    group.add_argument('-aesKey', action="store", metavar="hex key", help='AES key to use for Kerberos Authentication '
-                                                                          '(128 or 256 bits)')
-    group.add_argument('-dc-ip', action='store', metavar="ip address", help='IP Address of the domain controller. If '
-                                                                            'ommited it use the domain part (FQDN) specified in the target parameter')
-    group.add_argument('-A', action="store", metavar="authfile", help="smbclient/mount.cifs-style authentication file. "
-                                                                      "See smbclient man page's -A option.")
-
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(1)
-
-    options = parser.parse_args()
-
-    if options.codec is not None:
-        CODEC = options.codec
-    else:
-        if CODEC is None:
-            CODEC = 'UTF-8'
-
-    if ' '.join(options.command) == ' ' and options.nooutput is True:
-        logging.error("-nooutput switch and interactive shell not supported")
-        sys.exit(1)
-
-    if options.debug is True:
-        logging.getLogger().setLevel(logging.DEBUG)
-    else:
-        logging.getLogger().setLevel(logging.INFO)
-
-    import re
-
-    domain, username, password, address = re.compile('(?:(?:([^/@:]*)/)?([^@:]*)(?::([^@]*))?@)?(.*)').match(
-        options.target).groups('')
-
-    # In case the password contains '@'
-    if '@' in address:
-        password = password + '@' + address.rpartition('@')[0]
-        address = address.rpartition('@')[2]
-
-    try:
-        if options.A is not None:
-            (domain, username, password) = load_smbclient_auth_file(options.A)
-            logging.debug('loaded smbclient auth file: domain=%s, username=%s, password=%s' % (
-            repr(domain), repr(username), repr(password)))
-
-        if domain is None:
-            domain = ''
-
-        if password == '' and username != '' and options.hashes is None and options.no_pass is False and options.aesKey is None:
-            from getpass import getpass
-
-            password = getpass("Password:")
-
-        if options.aesKey is not None:
-            options.k = True
-
-        executer = WMIEXEC(' '.join(options.command), username, password, domain, options.hashes, options.aesKey,
-                           options.share, options.nooutput, options.k, options.dc_ip)
-        executer.run(address)
-    except KeyboardInterrupt as e:
-        logging.error(str(e))
-    except Exception as e:
-        if logging.getLogger().level == logging.DEBUG:
-            import traceback
-
-            traceback.print_exc()
-        logging.error(str(e))
-        sys.exit(1)
-
-    sys.exit(0)

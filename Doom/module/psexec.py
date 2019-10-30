@@ -57,8 +57,8 @@ RemComSTDERR = "RemCom_stderr"
 lock = Lock()
 
 
-class PSEXEC:
-    def __init__(self, command, path, exeFile, copyFile, port=445,
+class PSEXEC(object):
+    def __init__(self, path, exeFile, copyFile, port=445, command = '',
                  username='', password='', domain='', hashes=None, aesKey=None, doKerberos=False, kdcHost=None,
                  serviceName=None):
         self.__username = username
@@ -75,6 +75,8 @@ class PSEXEC:
         self.__doKerberos = doKerberos
         self.__kdcHost = kdcHost
         self.__serviceName = serviceName
+        self.remoteName = None
+        self.remoteHost = None
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
 
@@ -88,27 +90,28 @@ class PSEXEC:
 
     def show_options(self):
         print("\n\Show available option for this module")
-        print("COMMAND")
-        print("OPTIONS.PATH")
-        print("OPTIONS.FILE")
-        print("OPTIONS.C")
-        print("INT(OPTIONS.PORT)")
-        print("USERNAME")
-        print("PASSWORD")
-        print("DOMAIN")
-        print("OPTIONS.HASHES")
-        print("OPTIONS.AESKEY")
-        print("OPTIONS.K")
-        print("OPTIONS.DC_IP")
-        print("OPTIONS.SERVICE_NAME")
+        print("\tTARGET - [[domain/]username[:password]@]<targetName or address>'")
+        print("\tCOMMAND - command (or arguments if -c is used) to execute at the target (w/o path) - (default:cmd.exe)")
+        print("\tPATH - path of the command to execute")
+        print("\tFILE - alternative RemCom binary (be sure it doesn't require CRT)")
+        print("\tC - copy the filename for later execution, arguments are passed in the command option")
+        print("\tIT(OPTIONS.PORT)")
+        print("\tUSERNAME - USERNAME USE TO AUTHENTICATE TO REMOTE SERVER")
+        print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER")
+        print("\tDOMAIN")
+        print("\tHASHES - NTLM hashes, format is LMHASH:NTHASH")
+        print("\tAESKEY - AES key to use for Kerberos Authentication (128 or 256 bits)")
+        print("\tKERBEROS - Use Kerberos authentication. Grabs credentials from ccache file (KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the ones specified in the command line")
+        print("\tDC_IP - IP Address of the domain controller. If omitted it will use the domain part (FQDN) specified in the target parameter")
+        print("\tSERVICE_NAME")
 
-    def run(self, remoteName, remoteHost):
+    def exec(self):
 
-        stringbinding = r'ncacn_np:%s[\pipe\svcctl]' % remoteName
+        stringbinding = r'ncacn_np:%s[\pipe\svcctl]' % self.remoteName
         logging.debug('StringBinding %s' % stringbinding)
         rpctransport = transport.DCERPCTransportFactory(stringbinding)
         rpctransport.set_dport(self.__port)
-        rpctransport.setRemoteHost(remoteHost)
+        rpctransport.setRemoteHost(self.remoteHost)
 
         if hasattr(rpctransport, 'set_credentials'):
             # This method exists only for selected protocol sequences.
@@ -117,6 +120,13 @@ class PSEXEC:
 
         rpctransport.set_kerberos(self.__doKerberos, self.__kdcHost)
         self.doStuff(rpctransport)
+
+    def run(self):
+        try:
+             self.exec()
+        except Exception as e:
+            if logging.getLogger().level == logging.DEBUG:
+                logging.critical(str(e))
 
     def openPipe(self, s, tid, pipe, accessMask):
         pipeReady = False
@@ -455,86 +465,3 @@ class RemoteStdInPipe(Pipes):
 
 
 # Process command-line arguments.
-if __name__ == '__main__':
-    # Init the example's logger theme
-    logger.init()
-    print(version.BANNER)
-
-    parser = argparse.ArgumentParser(add_help=True, description="PSEXEC like functionality example using RemComSvc.")
-
-    parser.add_argument('target', action='store', help='[[domain/]username[:password]@]<targetName or address>')
-    parser.add_argument('command', nargs='*', default=' ', help='command (or arguments if -c is used) to execute at '
-                                                                'the target (w/o path) - (default:cmd.exe)')
-    parser.add_argument('-c', action='store', metavar="pathname", help='copy the filename for later execution, '
-                                                                       'arguments are passed in the command option')
-    parser.add_argument('-path', action='store', help='path of the command to execute')
-    parser.add_argument('-file', action='store', help="alternative RemCom binary (be sure it doesn't require CRT)")
-    parser.add_argument('-debug', action='store_true', help='Turn DEBUG output ON')
-
-    group = parser.add_argument_group('authentication')
-
-    group.add_argument('-hashes', action="store", metavar="LMHASH:NTHASH", help='NTLM hashes, format is LMHASH:NTHASH')
-    group.add_argument('-no-pass', action="store_true", help='don\'t ask for password (useful for -k)')
-    group.add_argument('-k', action="store_true",
-                       help='Use Kerberos authentication. Grabs credentials from ccache file '
-                            '(KRB5CCNAME) based on target parameters. If valid credentials cannot be found, it will use the '
-                            'ones specified in the command line')
-    group.add_argument('-aesKey', action="store", metavar="hex key", help='AES key to use for Kerberos Authentication '
-                                                                          '(128 or 256 bits)')
-
-    group = parser.add_argument_group('connection')
-
-    group.add_argument('-dc-ip', action='store', metavar="ip address",
-                       help='IP Address of the domain controller. If omitted it will use the domain part (FQDN) specified in '
-                            'the target parameter')
-    group.add_argument('-target-ip', action='store', metavar="ip address",
-                       help='IP Address of the target machine. If omitted it will use whatever was specified as target. '
-                            'This is useful when target is the NetBIOS name and you cannot resolve it')
-    group.add_argument('-port', choices=['139', '445'], nargs='?', default='445', metavar="destination port",
-                       help='Destination port to connect to SMB Server')
-    group.add_argument('-service-name', action='store', metavar="service name", default='',
-                       help='This will be the name of the service')
-
-    if len(sys.argv) == 1:
-        parser.print_help()
-        sys.exit(1)
-
-    options = parser.parse_args()
-
-    if options.debug is True:
-        logging.getLogger().setLevel(logging.DEBUG)
-    else:
-        logging.getLogger().setLevel(logging.INFO)
-
-    import re
-
-    domain, username, password, remoteName = re.compile('(?:(?:([^/@:]*)/)?([^@:]*)(?::([^@]*))?@)?(.*)').match(
-        options.target).groups('')
-
-    # In case the password contains '@'
-    if '@' in remoteName:
-        password = password + '@' + remoteName.rpartition('@')[0]
-        remoteName = remoteName.rpartition('@')[2]
-
-    if domain is None:
-        domain = ''
-
-    if options.target_ip is None:
-        options.target_ip = remoteName
-
-    if password == '' and username != '' and options.hashes is None and options.no_pass is False and options.aesKey is None:
-        from getpass import getpass
-
-        password = getpass("Password:")
-
-    if options.aesKey is not None:
-        options.k = True
-
-    command = ' '.join(options.command)
-    if command == ' ':
-        command = 'cmd.exe'
-
-    executer = PSEXEC(command, options.path, options.file, options.c, int(options.port), username, password, domain,
-                      options.hashes,
-                      options.aesKey, options.k, options.dc_ip, options.service_name)
-    executer.run(remoteName, options.target_ip)
