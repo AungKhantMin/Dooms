@@ -17,7 +17,7 @@ class Cmd(object):
 
     def __init__(self):
         self.module = ""
-        self.avaliable_module = ['smb_enum','ftp_enum','ftp_vuln','gobuster','smb_vuln','dns','nmap','smbexec','wmiexec', 'tsch exec', 'pexec']
+        self.avaliable_module = ['smb_enum','ftp_enum','ftp_vuln','gobuster','smb_vuln','dns','nmap','smbexec','wmiexec', 'tsch exec', 'psexec']
         self.obj = None
 
     def parser(self,command : str):
