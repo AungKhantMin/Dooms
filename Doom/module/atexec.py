@@ -31,8 +31,9 @@ from impacket.dcerpc.v5.rpcrt import RPC_C_AUTHN_GSS_NEGOTIATE
 
 
 class TSCH_EXEC:
-    def __init__(self, username='', password='', domain='', hashes=None, aesKey=None, doKerberos=False, kdcHost=None,
+    def __init__(self, ip = "" , username='', password='', domain='', hashes=None, aesKey=None, doKerberos=False, kdcHost=None,
                  command= ''):
+        self.target = ip
         self.__username = username
         self.__password = password
         self.__domain = domain
@@ -45,6 +46,20 @@ class TSCH_EXEC:
         self.addr = None
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
+
+    def set_target(self, ip):
+        self.target = ip
+        print("TARGET => %s" % self.target)
+
+    def set_user(self, username):
+        self.__username = username
+        print("USERNAME => %s" % self.__username)
+
+    def set_password(self, password):
+        self.__password = password
+        print("PASSWORD => %s" % self.__password)
+
+
 
     def show_help(self):
         print('''

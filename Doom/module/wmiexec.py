@@ -41,8 +41,9 @@ CODEC = sys.stdout.encoding
 
 
 class WMIEXEC:
-    def __init__(self, command='', username='', password='', domain='', hashes=None, aesKey=None, share='ADMINS$',
+    def __init__(self, ip = '', command='', username='', password='', domain='', hashes=None, aesKey=None, share='ADMINS$',
                  noOutput=False, doKerberos=False, kdcHost=None):
+        self.target = ip
         self.__command = command
         self.__username = username
         self.__password = password
@@ -58,6 +59,18 @@ class WMIEXEC:
         self.target=None
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
+
+    def set_target(self, ip):
+        self.target = ip
+        print("TARGET => %s" % self.target)
+
+    def set_user(self , username):
+        self.__username = username
+        print("USERNAME => %s" % self.__username)
+
+    def set_password(self, password):
+        self.__password = password
+        print("PASSWORD => %s" % self.__password)
 
     def show_help(self):
         print('''

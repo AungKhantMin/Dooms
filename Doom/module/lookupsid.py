@@ -44,13 +44,14 @@ class LSALookupSid:
 
     def show_options(self):
         print("\n\Show available option for this module")
-        print("USERNAME")
-        print("PASSWORD")
-        print("DOMAIN")
-        print("INT(OPTIONS.PORT)")
-        print("OPTIONS.HASHES")
-        print("OPTIONS.DOMAIN_SIDS")
-        print("OPTIONS.MAXRID")
+        print("\tTARGET - [[domain/]username[:password]@]<targetName or address>")
+        print("\tUSERNAME - USERNAME USE TO AUTHENTICATE TO REMOTE SERVER")
+        print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER")
+        print("\tDOMAIN")
+        print("\tINT(OPTIONS.PORT)")
+        print("\tHASHES - NTLM hashes, format is LMHASH:NTHASH")
+        print("\tDOMAIN_SIDS - Enumerate Domain SIDs (will likely forward requests to the DC)")
+        print("\tMAXRID - max Rid to check (default 4000)")
     def __init__(self, username='', password='', domain='', port=None,
                  hashes=None, domain_sids=False, maxRid=4000):
 

@@ -23,6 +23,7 @@ class SMB_ENUM(object):
         self.target = ip
         print("TARGET => %s" % self.target)
 
+
     def set_user(self, user):
         self.user = user
         print("USER => %s" % self.user)
