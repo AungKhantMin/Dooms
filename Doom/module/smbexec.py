@@ -97,6 +97,7 @@ class SMBServer(Thread):
         except Exception as e:
             logging.critical(str(e))
             pass
+
         logging.info('Setting up SMB Server')
         self.smb.processConfigFile()
         logging.info('Ready to listen...')
