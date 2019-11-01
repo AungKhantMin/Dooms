@@ -168,7 +168,6 @@ class SMBEXEC:
                 self.shell.finish()
             sys.stdout.flush()
 
-
     def show_help(self):
         print("\n\t    Show available commands for current module\n")
         print('''
