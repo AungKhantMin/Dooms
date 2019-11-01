@@ -58,7 +58,7 @@ lock = Lock()
 
 
 class PSEXEC(object):
-    def __init__(self, path, exeFile, copyFile, port=445, command = '', ip = '',
+    def __init__(self,command = 'cmd.exe', path=None, exeFile=None, copyFile=None, port=445,
                  username='', password='', domain='', hashes=None, aesKey=None, doKerberos=False, kdcHost=None,
                  serviceName=None):
         self.target = ip
@@ -78,6 +78,8 @@ class PSEXEC(object):
         self.__serviceName = serviceName
         self.remoteName = None
         self.remoteHost = None
+        self.avaliable_opt = ['target','user','password','port','hashes','aeskey','mode','share','kerberos','dcip','domain']
+
         if hashes is not None:
             self.__lmhash, self.__nthash = hashes.split(':')
 
