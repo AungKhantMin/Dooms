@@ -6,6 +6,9 @@ from Doom.module.color import C
 from Doom.module.ftp_enum import FTP_ENUM
 from Doom.module.nmap import NMAP
 from Doom.module.smbexec import SMBEXEC
+# from Doom.module.wmiexec import WMIEXEC
+# from Doom.module.atexec import  TSCH_EXEC
+from Doom.module.psexec import PSEXEC
 from os import system
 
 class Cmd(object):
@@ -14,7 +17,7 @@ class Cmd(object):
 
     def __init__(self):
         self.module = ""
-        self.avaliable_module = ['smb_enum','ftp_enum','ftp_vuln','gobuster','smb_vuln','dns','nmap','smbexec']
+        self.avaliable_module = ['smb_enum','ftp_enum','ftp_vuln','gobuster','smb_vuln','dns','nmap','smbexec','wmiexec', 'tsch exec', 'psexec']
         self.obj = None
 
     def parser(self,command : str):
@@ -60,8 +63,7 @@ class Cmd(object):
                 elif 'run' == str.lower(parse_commands[0]):
                     self.obj.run()
                 elif 'exit' == str.lower(parse_commands[0]):
-                    self.module = ""
-                    self.obj = None
+                    exit(0)
                 else:
                     print(C.BOLD+C.FAIL+"[-] Unknown command : %s" % parse_commands[0] + C.ENDC)
 

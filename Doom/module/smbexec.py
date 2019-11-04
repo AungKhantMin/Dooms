@@ -97,6 +97,7 @@ class SMBServer(Thread):
         except Exception as e:
             logging.critical(str(e))
             pass
+
         logging.info('Setting up SMB Server')
         self.smb.processConfigFile()
         logging.info('Ready to listen...')
@@ -166,7 +167,6 @@ class SMBEXEC:
             if self.shell is not None:
                 self.shell.finish()
             sys.stdout.flush()
-
 
     def show_help(self):
         print("\n\t    Show available commands for current module\n")
@@ -241,7 +241,7 @@ class SMBEXEC:
     def show_options(self):
         print("\n\tShow Available options for current module\n")
         print("\tTARGET - REMOTE TARGET IP ADDRESS")
-        print("\tUSER - USER NAME USE TO AUTHENTICATE TO REMOTE SERVER ")
+        print("\tUSER - USERNAME USE TO AUTHENTICATE TO REMOTE SERVER ")
         print("\tPASSWORD - PASSWORD  USE TO AUTHENTICATE TO REMOTE SERVER")
         print("\tPORT - TARGET PORT RUNNING SMB SERVICE DEFAULT is 445 (139,445) (OPTIONAL)")
         print("\tMODE - SERVER OR SHARE MODE TO USE DEFAULT IS SHARE")
